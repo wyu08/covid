@@ -16,9 +16,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class CovidResultsModule {
     @Provides
-    fun provideBaseUrl() = BASE_URL
-
-    @Provides
     @Singleton
     fun provideClientHttp(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(CovidInterceptor())
@@ -26,9 +23,9 @@ class CovidResultsModule {
 
     @Provides
     @Singleton
-    fun provideRetroFitInstance(baseUrl: String): CovidApi =
+    fun provideRetroFitInstance(): CovidApi =
         Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(provideClientHttp())
             .build()
