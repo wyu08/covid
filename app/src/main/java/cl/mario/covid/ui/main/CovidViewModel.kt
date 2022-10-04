@@ -29,9 +29,7 @@ class CovidViewModel @Inject constructor(private val getCovidApi: CovidApi) : Vi
     fun getCovidResults(date: String){
         viewModelScope.launch {
             isLoading.postValue(true)
-
             val result = getCovidApi.getData(date)
-            System.out.println(result)
             if (result.isSuccessful)
                 covidModel.postValue(result.body()!!.data)
             isLoading.postValue(false)
