@@ -2,11 +2,13 @@ package cl.mario.covid.ui.main
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import cl.mario.covid.databinding.ActivityMainBinding
+import cl.mario.covid.ui.viewData.CovidResultViewData
+import cl.mario.covid.util.State
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -21,26 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        covidViewModel.onCreate()
 
-        covidViewModel.covidModel.observe(this, Observer {
-            it
-            val confirmed = it.confirmed.toString()
-            val deaths = it.deaths.toString()
-
-            binding.tvDate.text = it.date
-            binding.tvConfirm.text = "Casos confirmados: $confirmed"
-            binding.tvDeath.text = "Cantidad de personas fallecidas $deaths"
-        })
-
-        covidViewModel.isLoading.observe(this, Observer {
-            binding.progress.isVisible = it
-            binding.button.isVisible = !it
-            binding.tvDate.isVisible = !it
-            binding.tvConfirm.isVisible = !it
-            binding.tvDeath.isVisible = !it
-            binding.ivHome.isVisible = !it
-        })
 
         binding.button.setOnClickListener {
             val c = Calendar.getInstance()
@@ -53,9 +36,42 @@ class MainActivity : AppCompatActivity() {
                 covidViewModel.getCovidResults("$year-$monthformat-$dayformat")
             }, year, month, day)
 
-            datePickerDialog.datePicker.maxDate = System.currentTimeMillis() - 24 * 60 * 60 * 1000 //sacandole el día vieja escuela jajaj sorry por esto
+            datePickerDialog.datePicker.maxDate =
+                System.currentTimeMillis() - 24 * 60 * 60 * 1000 //sacandole el día vieja escuela jajaj sorry por esto
             datePickerDialog.show()
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        covidViewModel.getCovidResults()
+
+        covidViewModel.covidInfoStateMutable.observe(this) {
+            when (it) {
+                is State.Error -> showError(it.message)
+                is State.Loading -> showLoading(true)
+                is State.Success -> loadCovidResults(it.data)
+            }
+        }
+    }
+
+    fun showError(message: String) {
+        showLoading(false)
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
+    }
+
+    fun showLoading(visible: Boolean) {
+        binding.container.isVisible = !visible
+        binding.progress.isVisible = visible
+    }
+
+    fun loadCovidResults(covidResultViewData: CovidResultViewData) {
+        showLoading(false)
+        binding.tvDate.text = covidResultViewData.date
+        binding.tvConfirm.text = "Casos confirmados: ${covidResultViewData.confirmed}"
+        binding.tvDeath.text = "Cantidad de personas fallecidas ${covidResultViewData.death}"
     }
 }
