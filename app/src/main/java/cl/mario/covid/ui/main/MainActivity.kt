@@ -2,7 +2,6 @@ package cl.mario.covid.ui.main
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +9,6 @@ import androidx.core.view.isVisible
 import cl.mario.covid.databinding.ActivityMainBinding
 import cl.mario.covid.ui.viewData.CovidResultViewData
 import cl.mario.covid.util.State
-import cl.mario.covid.util.getCurrentDateFormatApi
-import cl.mario.covid.util.getCurrentDateWithSpanishFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -49,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        //covidViewModel.getCovidResults(getCurrentDateFormatApi())
+        covidViewModel.getCovidResults()
 
         covidViewModel.covidInfoStateMutable.observe(this) {
             when (it) {
@@ -61,7 +58,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showError(message: String) {
+        showLoading(false)
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
     }
 
     fun showLoading(visible: Boolean) {
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     fun loadCovidResults(covidResultViewData: CovidResultViewData) {
         showLoading(false)
-        binding.tvDate.text = getCurrentDateWithSpanishFormat()
+        binding.tvDate.text = covidResultViewData.date
         binding.tvConfirm.text = "Casos confirmados: ${covidResultViewData.confirmed}"
         binding.tvDeath.text = "Cantidad de personas fallecidas ${covidResultViewData.death}"
     }
