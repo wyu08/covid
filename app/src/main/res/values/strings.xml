@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">covid</string>
+    <string name="error_message">Something went wrong , try again.</string>
 </resources>

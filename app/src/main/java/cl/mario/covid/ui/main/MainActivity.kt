@@ -2,13 +2,9 @@ package cl.mario.covid.ui.main
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import cl.mario.covid.data.models.CovidResultsData
 import cl.mario.covid.databinding.ActivityMainBinding
-import cl.mario.covid.ui.viewData.CovidResultViewData
 import cl.mario.covid.util.State
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -46,6 +42,17 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         binding.viewModel = covidViewModel
         binding.lifecycleOwner = this
+        initObserver()
         covidViewModel.getCovidResults()
+    }
+
+    private fun initObserver() {
+        covidViewModel.covidInfoStateLiveData.observe(this) {
+            if(it is State.Error ){
+                binding.errorView.loadError(it.message){
+                    covidViewModel.getCovidResults(covidViewModel.lastDateRequest)
+                }
+            }
+        }
     }
 }

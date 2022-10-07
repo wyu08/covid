@@ -38,27 +38,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvDeath"
                 tools:text="15 de abril del 2020" />
 
             <TextView
-                android:id="@+id/tvDeath"
-                android:text="@{`Cantidad de personas fallecidas: `+ Integer.toString(viewModel.covidDataResultLiveData.death)}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvConfirm"
-                tools:text="Cantidad de personas fallecidas: 1340590" />
-
-            <TextView
                 android:id="@+id/tvConfirm"
-                android:text="@{`Casos confirmados: `+ Integer.toString(viewModel.covidDataResultLiveData.confirmed)}"
+                android:text="@{`Confirmed cases: `+ Integer.toString(viewModel.covidDataResultLiveData.confirmed)}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDate"
+                app:layout_constraintBottom_toTopOf="@id/ivHome"
                 tools:text="Casos confirmados: 13.200" />
+
+            <TextView
+                android:id="@+id/tvDeath"
+                android:text="@{`Number of deceased people: `+ Integer.toString(viewModel.covidDataResultLiveData.death)}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvConfirm"
+                app:layout_constraintBottom_toTopOf="@id/ivHome"
+                tools:text="Cantidad de personas fallecidas: 1340590" />
+
+
 
             <ImageView
                 android:id="@+id/ivHome"
@@ -68,19 +73,30 @@
                 android:src="@drawable/home"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDeath" />
+                app:layout_constraintTop_toBottomOf="@+id/tvDeath"/>
+
 
             <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seleccione una fecha"
+                android:text="Choose a date"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivHome" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <cl.mario.covid.ui.viewcomponent.ErrorViewComponent
+            android:id="@+id/errorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isError() == true ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress"

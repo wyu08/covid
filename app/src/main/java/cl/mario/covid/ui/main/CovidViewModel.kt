@@ -14,6 +14,9 @@ import javax.inject.Inject
 class CovidViewModel @Inject constructor(private val getDataCovidUseCase: GetDataCovidUseCase) :
     DefaultViewModel() {
 
+    var lastDateRequest: String = ""
+        private set
+
     private val _covidInfoStateLiveData = MutableLiveData<State<CovidResultViewData>>()
     val covidInfoStateLiveData: LiveData<State<CovidResultViewData>> = _covidInfoStateLiveData
 
@@ -22,8 +25,12 @@ class CovidViewModel @Inject constructor(private val getDataCovidUseCase: GetDat
 
     fun getCovidResults(date: String = getCurrentDateFormatApi()) =
         handleView(getDataCovidUseCase.execute(date), _covidInfoStateLiveData,
+            onLoading = {
+                        lastDateRequest = date
+            },
             onSuccess = {
                 _covidDataResultLiveData.postValue(it)
             })
+
 }
 
