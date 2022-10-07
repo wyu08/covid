@@ -43,26 +43,23 @@
 
             <TextView
                 android:id="@+id/tvConfirm"
-                android:text="@{`Confirmed cases: `+ Integer.toString(viewModel.covidDataResultLiveData.confirmed)}"
+                android:text="@{@string/confirmed_cases(Integer.toString(viewModel.covidDataResultLiveData.confirmed))}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDate"
-                app:layout_constraintBottom_toTopOf="@id/ivHome"
-                tools:text="Casos confirmados: 13.200" />
+                app:layout_constraintBottom_toTopOf="@id/ivHome"/>
 
             <TextView
                 android:id="@+id/tvDeath"
-                android:text="@{`Number of deceased people: `+ Integer.toString(viewModel.covidDataResultLiveData.death)}"
+                android:text="@{@string/deceased_people(Integer.toString(viewModel.covidDataResultLiveData.death))}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvConfirm"
-                app:layout_constraintBottom_toTopOf="@id/ivHome"
-                tools:text="Cantidad de personas fallecidas: 1340590" />
-
+                app:layout_constraintBottom_toTopOf="@id/ivHome"/>
 
 
             <ImageView
@@ -80,7 +77,7 @@
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose a date"
+                android:text="@string/choose_date"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
