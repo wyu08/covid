@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import cl.mario.covid.data.models.CovidResultsData
 import cl.mario.covid.databinding.ActivityMainBinding
 import cl.mario.covid.ui.viewData.CovidResultViewData
 import cl.mario.covid.util.State
@@ -22,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         binding.button.setOnClickListener {
             val c = Calendar.getInstance()
@@ -45,33 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
+        binding.viewModel = covidViewModel
+        binding.lifecycleOwner = this
         covidViewModel.getCovidResults()
-
-        covidViewModel.covidInfoStateMutable.observe(this) {
-            when (it) {
-                is State.Error -> showError(it.message)
-                is State.Loading -> showLoading(true)
-                is State.Success -> loadCovidResults(it.data)
-            }
-        }
-    }
-
-    fun showError(message: String) {
-        showLoading(false)
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
-    }
-
-    fun showLoading(visible: Boolean) {
-        binding.container.isVisible = !visible
-        binding.progress.isVisible = visible
-    }
-
-    fun loadCovidResults(covidResultViewData: CovidResultViewData) {
-        showLoading(false)
-        binding.tvDate.text = covidResultViewData.date
-        binding.tvConfirm.text = "Casos confirmados: ${covidResultViewData.confirmed}"
-        binding.tvDeath.text = "Cantidad de personas fallecidas ${covidResultViewData.death}"
     }
 }
