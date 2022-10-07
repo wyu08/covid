@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListener(){
         binding.apply {
-            button.setOnClickListener {
+            chooseDateDialogBtn.setOnClickListener {
                 openCalendar()
             }
         }

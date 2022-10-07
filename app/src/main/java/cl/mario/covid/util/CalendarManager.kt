@@ -1,10 +1,10 @@
 package cl.mario.covid.util
 
 import android.app.DatePickerDialog
-import cl.mario.covid.ui.main.MainActivity
+import android.content.Context
 import java.util.*
 
-class CalendarManager(private val activity: MainActivity) {
+class CalendarManager(private val context: Context) {
 
     private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
@@ -22,7 +22,7 @@ class CalendarManager(private val activity: MainActivity) {
 
         calendarSelected.apply {
             val datePickerDialog = DatePickerDialog(
-                activity, { _, year, month, day ->
+                context, { _, year, month, day ->
                     val calendar = Calendar.getInstance()
                     calendar.set(year,month,day)
                     dateSelectedListener?.invoke(calendar.time)
