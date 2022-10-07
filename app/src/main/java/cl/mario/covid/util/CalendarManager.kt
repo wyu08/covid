@@ -6,9 +6,9 @@ import java.util.*
 
 class CalendarManager(private val activity: MainActivity) {
 
-    private var dateSelectedListener: ((date: String) -> Unit)? = null
+    private var dateSelectedListener: ((date: Date) -> Unit)? = null
 
-    fun setOnSelectedListener(listener: (date: String) -> Unit) {
+    fun setOnSelectedListener(listener: (date: Date) -> Unit) {
         dateSelectedListener = listener
     }
 
@@ -23,7 +23,9 @@ class CalendarManager(private val activity: MainActivity) {
         calendarSelected.apply {
             val datePickerDialog = DatePickerDialog(
                 activity, { _, year, month, day ->
-                    dateSelectedListener?.invoke(formatDateToApi(year,month,day))
+                    val calendar = Calendar.getInstance()
+                    calendar.set(year,month,day)
+                    dateSelectedListener?.invoke(calendar.time)
                 }, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)
             )
             datePickerDialog.apply {
@@ -31,11 +33,5 @@ class CalendarManager(private val activity: MainActivity) {
                 show()
             }
         }
-    }
-
-    private fun formatDateToApi(year:Int,month:Int,day:Int) : String{
-        val monthformat = month.plus(1).toString().padStart(2,'0')
-        val dayformat = day.toString().padStart(2,'0')
-        return "$year-$monthformat-$dayformat"
     }
 }

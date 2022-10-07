@@ -1,14 +1,13 @@
 package cl.mario.covid.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import cl.mario.covid.databinding.ActivityMainBinding
 import cl.mario.covid.util.CalendarManager
 import cl.mario.covid.util.State
+import cl.mario.covid.util.dateToStringApi
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val calendar = CalendarManager(this)
         calendar.show()
         calendar.setOnSelectedListener {
-            covidViewModel.getCovidResults(it)
+            covidViewModel.getCovidResults(dateToStringApi(it))
         }
     }
 }
