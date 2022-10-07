@@ -1,10 +1,11 @@
 package cl.mario.covid.ui.main
 
-import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import cl.mario.covid.databinding.ActivityMainBinding
+import cl.mario.covid.util.CalendarManager
 import cl.mario.covid.util.State
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -19,23 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.button.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DATE).minus(1)
-            val datePickerDialog = DatePickerDialog(this, { view, year, month, day ->
-                val monthformat = month.plus(1).toString().padStart(2, '0')
-                val dayformat = day.toString().padStart(2, '0')
-                covidViewModel.getCovidResults("$year-$monthformat-$dayformat")
-            }, year, month, day)
-
-            datePickerDialog.datePicker.maxDate =
-                System.currentTimeMillis() - 24 * 60 * 60 * 1000 //sacandole el día vieja escuela jajaj sorry por esto
-            datePickerDialog.show()
-        }
-
     }
 
     override fun onStart() {
@@ -43,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = covidViewModel
         binding.lifecycleOwner = this
         initObserver()
+        initListener()
         covidViewModel.getCovidResults()
     }
 
@@ -53,6 +38,22 @@ class MainActivity : AppCompatActivity() {
                     covidViewModel.getCovidResults(covidViewModel.lastDateRequest)
                 }
             }
+        }
+    }
+
+    private fun initListener(){
+        binding.apply {
+            button.setOnClickListener {
+                openCalendar()
+            }
+        }
+    }
+
+    private fun openCalendar(){
+        val calendar = CalendarManager(this)
+        calendar.show()
+        calendar.setOnSelectedListener {
+            covidViewModel.getCovidResults(it)
         }
     }
 }
