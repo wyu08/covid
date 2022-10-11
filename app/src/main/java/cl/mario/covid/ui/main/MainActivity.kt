@@ -40,19 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initListener(){
-        binding.apply {
-            chooseDateDialogBtn.setOnClickListener {
-                openCalendar()
+    private fun initListener() {
+        binding.chooseDateDialogBtn.setOnClickListener {
+            CalendarManager(binding.root.context).apply {
+                setOnSelectedListener { date ->
+                    covidViewModel.getCovidResults(dateToStringApi(date))
+                }
+                show()
             }
-        }
-    }
-
-    private fun openCalendar(){
-        val calendar = CalendarManager(this)
-        calendar.show()
-        calendar.setOnSelectedListener {
-            covidViewModel.getCovidResults(dateToStringApi(it))
         }
     }
 }
