@@ -28,10 +28,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/errorImage"
-        app:layout_constraintBottom_toTopOf="@id/btn"/>
+        app:layout_constraintBottom_toTopOf="@id/retryBtn"/>
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/retryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="120dp"
