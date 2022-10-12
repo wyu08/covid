@@ -1,3 +1,6 @@
 [submodule "routermodule"]
 	path = routermodule
 	url = https://github.com/MarioDelgadoM/routermodule.git
+[submodule "covidmodule"]
+	path = covidmodule
+	url = https://github.com/MarioDelgadoM/covidmodule.git
