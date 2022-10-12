@@ -24,7 +24,7 @@ class ErrorViewComponent(context: Context, attributeSet: AttributeSet) :
     }
 
     fun setSubscriptionRetryButton(retryCallback: (() -> Unit)? = null) {
-        binding.btn.setOnClickListener {
+        binding.retryBtn.setOnClickListener {
             retryCallback?.invoke()
         }
     }
