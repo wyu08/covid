@@ -14,11 +14,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, appReceivedServiceImpl.getCovidResultFragment())
-                .commitNow()
-        }
     }
 
+    override fun onStart() {
+        super.onStart()
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.container,
+                appReceivedServiceImpl.getCovidResultFragment()
+            )
+            .commitNow()
+    }
 }
