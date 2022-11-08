@@ -6,6 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
@@ -54,28 +55,38 @@ class MainActivityTest {
             instrumentationContext.resources.getString(R.string.deceased_people)
                 .replace("%d", "")
 
+        onView(withId(R.id.tvDate))
+            .check(matches(withSubstring(chooseDate)))
 
-        onView(withId(R.id.tvDate)).check(matches(withSubstring(chooseDate)))
-        onView(withId(R.id.tvConfirm)).check(matches(withSubstring(confirmed)))
-        onView(withId(R.id.tvDeath)).check(matches(withSubstring(death)))
+        onView(withId(R.id.tvConfirm))
+            .check(matches(withSubstring(confirmed)))
 
-        setDate(R.id.chooseDateDialogBtn,2022,11,1)
+        onView(withId(R.id.tvDeath))
+            .check(matches(withSubstring(death)))
 
-        onView(withId(R.id.progress)).check(matches(isDisplayed()))
+        setDatePickerDialog(R.id.chooseDateDialogBtn,2022,11,1)
+
+        onView(withId(R.id.progress))
+            .check(matches(isDisplayed()))
 
         Thread.sleep(2000L)
 
-        onView(withId(R.id.tvDate)).check(matches(withSubstring(expectedDateText)))
+        onView(withId(R.id.tvDate))
+            .check(matches(withSubstring(expectedDateText)))
 
         Thread.sleep(1000L)
 
     }
 
-    private fun setDate(datePickerLaunchViewId: Int, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        onView(withId(datePickerLaunchViewId)).perform(click())
-        onView(withClassName(Matchers.equalTo(DatePicker::class.java.name))).perform(
-            PickerActions.setDate(year, monthOfYear, dayOfMonth)
-        )
-        onView(withText("ACEPTAR")).perform(click())
+    private fun setDatePickerDialog(datePickerLaunchViewId: Int, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        onView(withId(datePickerLaunchViewId))
+            .perform(click())
+
+        onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
+            .perform(PickerActions.setDate(year, monthOfYear, dayOfMonth))
+
+        onView(withText(android.R.string.ok))
+            .inRoot(isDialog())
+            .perform(click())
     }
 }
