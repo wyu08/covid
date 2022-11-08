@@ -1,5 +1,6 @@
 package cl.mario.covid.ui.main
 
+import android.content.Context
 import android.widget.DatePicker
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -11,6 +12,7 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import cl.mario.covid.covidmodule.R
 import org.hamcrest.Matchers
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,6 +28,13 @@ class MainActivityTest {
     @JvmField
     var mActivityTestRule = ActivityScenarioRule(MainActivity::class.java)
 
+    lateinit var instrumentationContext: Context
+
+    @Before
+    fun setup(){
+        instrumentationContext = InstrumentationRegistry.getInstrumentation().targetContext
+    }
+
     @Test
     fun checkDatePickerDialogSetDate() {
 
@@ -34,15 +43,15 @@ class MainActivityTest {
         Thread.sleep(3000L)
 
         val chooseDate =
-            InstrumentationRegistry.getInstrumentation().targetContext.resources.getString(R.string.date_title)
+            instrumentationContext.resources.getString(R.string.date_title)
                 .replace("%s", "")
 
         val confirmed =
-            InstrumentationRegistry.getInstrumentation().targetContext.resources.getString(R.string.confirmed_cases)
+            instrumentationContext.resources.getString(R.string.confirmed_cases)
                 .replace("%d", "")
 
         val death =
-            InstrumentationRegistry.getInstrumentation().targetContext.resources.getString(R.string.deceased_people)
+            instrumentationContext.resources.getString(R.string.deceased_people)
                 .replace("%d", "")
 
 
@@ -54,7 +63,7 @@ class MainActivityTest {
 
         onView(withId(R.id.progress)).check(matches(isDisplayed()))
 
-        Thread.sleep(1000L)
+        Thread.sleep(2000L)
 
         onView(withId(R.id.tvDate)).check(matches(withSubstring(expectedDateText)))
 
