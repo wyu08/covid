@@ -1,9 +1,3 @@
 <resources>
     <string name="app_name">covid</string>
-    <string name="error_message">Something went wrong , try again.</string>
-    <string name="confirmed_cases">Confirmed cases: %s </string>
-    <string name="deceased_people">Number of deceased people: %s </string>
-    <string name="choose_date">Choose a date</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
