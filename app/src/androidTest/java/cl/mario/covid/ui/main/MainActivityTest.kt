@@ -43,7 +43,7 @@ class MainActivityTest {
 
         Thread.sleep(3000L)
 
-        val chooseDate =
+        val dateTitle =
             instrumentationContext.resources.getString(R.string.date_title)
                 .replace("%s", "")
 
@@ -56,7 +56,7 @@ class MainActivityTest {
                 .replace("%d", "")
 
         onView(withId(R.id.tvDate))
-            .check(matches(withSubstring(chooseDate)))
+            .check(matches(withSubstring(dateTitle)))
 
         onView(withId(R.id.tvConfirm))
             .check(matches(withSubstring(confirmed)))
